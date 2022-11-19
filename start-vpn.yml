@@ -1,0 +1,82 @@
+---
+- name: Start and set up vpn server
+  hosts: vpn
+  remote_user: root
+  gather_facts: yes
+  vars:
+    remote_host: "{{ inventory_hostname }}"
+
+  tasks:
+    - name: Install aptitude
+      apt:
+        name: aptitude
+        state: latest
+        update_cache: true
+
+    - name: Install required system packages
+      apt:
+        pkg:
+          - apt-transport-https
+          - ca-certificates
+          - curl
+          - software-properties-common
+          - python3-pip
+          - virtualenv
+          - python3-setuptools
+        state: latest
+        update_cache: true
+
+    - name: Add Docker GPG apt Key
+      apt_key:
+        url: https://download.docker.com/linux/ubuntu/gpg
+        state: present
+
+    - name: Add Docker Repository
+      apt_repository:
+        repo: deb https://download.docker.com/linux/ubuntu focal stable
+        state: present
+
+    - name: Update apt and install docker-ce
+      apt:
+        name: docker-ce
+        state: latest
+        update_cache: true
+
+    - name: Install Docker Module for Python
+      pip:
+        name: docker
+
+    - name: Start vpn container
+      docker_container:
+        name: openvpn
+        image: umputun/dockvpn
+        log_driver: none
+        privileged: Yes
+        restart_policy: always
+        ports:
+         - 1194:1194/udp
+         - 443:443/tcp
+
+    - name: Start container serving config
+      docker_container:
+        name: openvpn-config
+        image: umputun/dockvpn
+        command: serveconfig
+        log_driver: none
+        tty: Yes
+        interactive: Yes
+        ports:
+         - 8181:8080
+        volumes_from: openvpn
+
+    - name: Download vpn configuration to local machine
+      delegate_to: localhost
+      ansible.builtin.get_url:
+        url: https://{{ remote_host }}:8181
+        dest: ./vpn-config.ovpn
+        validate_certs: no
+
+    - name: Stop container serving config
+      docker_container:
+        name: openvpn-config
+        state: stopped
