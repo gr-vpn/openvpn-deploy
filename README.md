@@ -7,9 +7,9 @@ This repo contains an Ansible playbook to deploy an OpenVPN server to your remot
 Here is a [guide](https://docs.ansible.com/ansible/latest/installation_guide/intro_installation.html) on how to install Ansible to your local machine
 
 ### System requirements
+* Linux/macOS/WSL on Windows
 * Python 3
 * Ansible
-* Linux/macOS/WSL on Windows
 * SSH key for the remote machine
 
 After the installation, make sure that `ansible --version` command works, if not, [you need to add Ansible to the PATH environment variable](https://stackoverflow.com/questions/45821068/why-cant-i-find-ansible-when-i-install-it-using-setup-py).
