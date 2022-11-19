@@ -1,6 +1,6 @@
 # openvpn-deploy
 
-This repo contains an Ansible playbook to deploy an OpenVPN server to your remote machine
+This repo contains an Ansible playbook to deploy an OpenVPN server to your remote machine with Debian-based OS.
 
 ## Prerequisites
 
@@ -10,6 +10,7 @@ Here is a [guide](https://docs.ansible.com/ansible/latest/installation_guide/int
 * Linux/macOS/WSL on Windows
 * Python 3
 * Ansible
+* Remote machine with Debian-based OS
 * SSH key for the remote machine
 
 After the installation, make sure that `ansible --version` command works, if not, [you need to add Ansible to the PATH environment variable](https://stackoverflow.com/questions/45821068/why-cant-i-find-ansible-when-i-install-it-using-setup-py).
