@@ -20,20 +20,12 @@ It's recommended to use WSL on Windows because Ansible requires some Python pack
 ## Executing playbook
 
 1. Clone this repo to your local machine or download its content.
-2. Update `hosts.yml` file with an ip or domain name of the machine you need to install OpenVPN to. It should look like this:
-```yaml
-all:
-  children:
-    vpn:
-      hosts:
-        1.2.3.4:
-```
-3. Start playbook execution with the following command:
+2. Start playbook execution with the following command:
 
-`ansible-playbook -i hosts.yml --private-key <path to your ssh key> start-vpn.yml`.
+`ansible-playbook -i <IP of the machine to install VPN to>, --private-key <path to your ssh key> start-vpn.yml`.
 
 For example:
 
-`ansible-playbook -i hosts.yml --private-key ~/.ssh/id_rsa start-vpn.yml`
+`ansible-playbook -i 1.2.3.4, --private-key ~/.ssh/id_rsa start-vpn.yml`
 
-4. Find `vpn-config.ovpn` file in the folder you executed the playbook from. You can use this file in any [OpenVPN client](https://openvpn.net/vpn-client/) to use your vpn. 
+3. Find `vpn-config.ovpn` file in the folder you executed the playbook from. You can use this file in any [OpenVPN client](https://openvpn.net/vpn-client/) to use your vpn. 
