@@ -75,6 +75,10 @@
         url: https://{{ remote_host }}:8181
         dest: ./vpn-config.ovpn
         validate_certs: no
+      retries: 20
+      delay: 10
+      register: downloading_result
+      until: downloading_result is succeeded
 
     - name: Stop container serving config
       docker_container:
