@@ -49,10 +49,12 @@
     - name: Start vpn container
       docker_container:
         name: openvpn
-        image: umputun/dockvpn
+        image: ghcr.io/romangr/dockvpn:master
         log_driver: none
         privileged: Yes
         restart_policy: always
+        env:
+          DISABLE_LOGS: "1"
         ports:
          - 1194:1194/udp
          - 443:443/tcp
@@ -60,11 +62,13 @@
     - name: Start container serving config
       docker_container:
         name: openvpn-config
-        image: umputun/dockvpn
+        image: ghcr.io/romangr/dockvpn:master
         command: serveconfig
         log_driver: none
         tty: Yes
         interactive: Yes
+        env:
+          DISABLE_LOGS: "1"
         ports:
          - 8181:8080
         volumes_from: openvpn
